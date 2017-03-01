@@ -30,7 +30,7 @@ sevenSegment::sevenSegment(int pinArray[8])
 	
 }
 
-bool sevenSegment::compareArrays(int arr_a[8], int arr_b[8])
+bool sevenSegment::_compareArrays(int arr_a[8], int arr_b[8])
 {
 	for (int i=0; i < 8; i++)
 	{
@@ -126,93 +126,93 @@ void sevenSegment::showDigit(int digit)
 		{
 			case 0:
 			{
-				writeBitfield(c0);
+				_writeBitfield(c0);
 				break;
 			}
 			case 1:
 			{
-				writeBitfield(c1);
+				_writeBitfield(c1);
 				break;
 			}
 			case 2:
 			{
-				writeBitfield(c2);
+				_writeBitfield(c2);
 				break;
 			}
 			case 3:
 			{
-				writeBitfield(c3);
+				_writeBitfield(c3);
 				break;
 			}
 			case 4:
 			{
-				writeBitfield(c4);
+				_writeBitfield(c4);
 				break;
 			}
 			case 5:
 			{
-				writeBitfield(c5);
+				_writeBitfield(c5);
 				break;
 			}
 			case 6:
 			{
-				writeBitfield(c6);
+				_writeBitfield(c6);
 				break;
 			}
 			case 7:
 			{
-				writeBitfield(c7);
+				_writeBitfield(c7);
 				break;
 			}
 			case 8:
 			{
-				writeBitfield(c8);
+				_writeBitfield(c8);
 				break;
 			}
 			case 9:
 			{
-				writeBitfield(c9);
+				_writeBitfield(c9);
 				break;
 			}
 			case 10:
 			{
-				writeBitfield(c10);
+				_writeBitfield(c10);
 				break;
 			}
 			case 11:
 			{
-				writeBitfield(c11);
+				_writeBitfield(c11);
 				break;
 			}
 			case 12:
 			{
-				writeBitfield(c12);
+				_writeBitfield(c12);
 				break;
 			}
 			case 255:
 			{
-				writeBitfield(c255);
+				_writeBitfield(c255);
 				break;
 			}
 			case 254:
 			{
-				writeBitfield(c254);
+				_writeBitfield(c254);
 				break;
 			}
 			default:
 			{
-				writeBitfield(c255);
+				_writeBitfield(c255);
 				break;
 			}
 		}
 	}
 	else
 	{
-		writeBitfield(c255);
+		_writeBitfield(c255);
 	}
 }
 
-void sevenSegment::writeBitfield(int arr[8])
+void sevenSegment::_writeBitfield(int arr[8])
 {
 	for (int i = 0; i < 8; i++)
 	{
@@ -255,63 +255,63 @@ int sevenSegment::readDigit()
 	}
 	
 	// Compare to known values	
-	if (compareArrays(currentPins, c0))
+	if (_compareArrays(currentPins, c0))
 	{
 		outputInt = 0;	
 	}
-	else if (compareArrays(currentPins, c1))
+	else if (_compareArrays(currentPins, c1))
 	{
 		outputInt = 1;
 	}
-	else if (compareArrays(currentPins, c2))
+	else if (_compareArrays(currentPins, c2))
 	{
 		outputInt = 2;
 	}
-	else if (compareArrays(currentPins, c3))
+	else if (_compareArrays(currentPins, c3))
 	{
 		outputInt = 3;
 	}
-	else if (compareArrays(currentPins, c4))
+	else if (_compareArrays(currentPins, c4))
 	{
 		outputInt = 4;
 	}
-	else if (compareArrays(currentPins, c5))
+	else if (_compareArrays(currentPins, c5))
 	{
 		outputInt = 5;
 	}
-	else if (compareArrays(currentPins, c6))
+	else if (_compareArrays(currentPins, c6))
 	{
 		outputInt = 6;
 	}
-	else if (compareArrays(currentPins, c7))
+	else if (_compareArrays(currentPins, c7))
 	{
 		outputInt = 7;
 	}
-	else if (compareArrays(currentPins, c8))
+	else if (_compareArrays(currentPins, c8))
 	{
 		outputInt = 8;
 	}
-	else if (compareArrays(currentPins, c9))
+	else if (_compareArrays(currentPins, c9))
 	{
 		outputInt = 9;
 	}
-	else if (compareArrays(currentPins, c10))
+	else if (_compareArrays(currentPins, c10))
 	{
 		outputInt = 10;
 	}
-	else if (compareArrays(currentPins, c11))
+	else if (_compareArrays(currentPins, c11))
 	{
 		outputInt = 11;
 	}
-	else if (compareArrays(currentPins, c12))
+	else if (_compareArrays(currentPins, c12))
 	{
 		outputInt = 12;
 	}
-	else if (compareArrays(currentPins, c255))
+	else if (_compareArrays(currentPins, c255))
 	{
 		outputInt = 255;
 	}
-	else if (compareArrays(currentPins, c254))
+	else if (_compareArrays(currentPins, c254))
 	{
 		outputInt = 254;
 	}

@@ -1,0 +1,11 @@
+sevenSegment	KEYWORD1
+
+lightSegment	KEYWORD2
+clearSegment	KEYWORD2
+showDigit	KEYWORD2
+clearDisplay	KEYWORD2
+flashDigit	KEYWORD2
+showFloat	KEYWORD2
+showString	KEYWORD2
+readDigit	KEYWORD2
+reinit	KEYWORD2

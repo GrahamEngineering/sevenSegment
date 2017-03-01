@@ -20,8 +20,8 @@ class sevenSegment
 	int readDigit();
 	void reinit();
   private:
-	void writeBitfield(int arr[8]);
-	bool compareArrays(int arr_a[8], int arr_b[8]);
+	void _writeBitfield(int arr[8]);
+	bool _compareArrays(int arr_a[8], int arr_b[8]);
 	int _pinArray[8];
 	uint8_t _reinitCounter;
 	int c0[8] = {1,1,1,1,1,1,0,0};
