@@ -16,6 +16,19 @@
 #include "Arduino.h"
 #include "sevenSegment.h"
 
+sevenSegment::sevenSegment()
+{
+	int pinArray[8] = {4, 5, 6, 7, 8, 9, 10, 11};
+	
+	if (int i= 0; i < 8; i++)
+	{
+		_pinArray[i] = pinArray[i];
+		pinMode(pinArray[i], OUTPUT);
+	}
+	
+	_reinitCounter = 0;
+}
+
 sevenSegment::sevenSegment(int pinArray[8])
 {
 	// Initialization array is in order of pins for segments {a,b,c,d,e,f,g,P}
@@ -42,20 +55,19 @@ bool sevenSegment::_compareArrays(int arr_a[8], int arr_b[8])
 	return true;
 }
 
-void sevenSegment::reinit()
+void sevenSegment::_writeBitfield(int arr[8])
 {
 	for (int i = 0; i < 8; i++)
 	{
-		digitalWrite(_pinArray[i], HIGH);
+		if (arr[i])
+		{
+			digitalWrite(_pinArray[i], HIGH);
+		}
+		else
+		{
+			digitalWrite(_pinArray[i], LOW);
+		}
 	}
-	
-	delay(50);
-	
-	for (int i = 0; i < 8; i++)
-	{
-		digitalWrite(_pinArray[i], LOW);
-	}
-	
 }
 
 bool sevenSegment::lightSegment(int seg)
@@ -90,7 +102,6 @@ bool sevenSegment::clearSegment(int seg)
 	}
 }
 
-
 void sevenSegment::clearDisplay()
 {
 	for (int i = 0; i < 8; i++)
@@ -102,7 +113,7 @@ void sevenSegment::clearDisplay()
 
 void sevenSegment::showDigit(int digit)
 {
-	if (digit >=0 && digit <= 12)
+	if ((digit >=0 && digit <= 12) || (digit >=254 && digit <= 255))
 	{
 		// digit is in range
 		/*
@@ -117,8 +128,10 @@ void sevenSegment::showDigit(int digit)
 			8 - {1,1,1,1,1,1,1,0}
 			9 - {1,1,1,1,0,0,1,0}
 			10 - (decmal point) {0,0,0,0,0,0,0,1}
-			11 = (all) {1,1,1,1,1,1,1,1}
-			12 = (hyphen) {0,0,0,0,0,0,1,0}
+			11 - (all) {1,1,1,1,1,1,1,1}
+			12 - (hyphen) {0,0,0,0,0,0,1,0}
+			254 - F
+			255 - C
 		
 		
 		*/
@@ -201,7 +214,8 @@ void sevenSegment::showDigit(int digit)
 			}
 			default:
 			{
-				_writeBitfield(c255);
+				//Serial.println("Invalid value passed in to showDigit()");
+				clearDisplay();
 				break;
 			}
 		}
@@ -209,21 +223,6 @@ void sevenSegment::showDigit(int digit)
 	else
 	{
 		_writeBitfield(c255);
-	}
-}
-
-void sevenSegment::_writeBitfield(int arr[8])
-{
-	for (int i = 0; i < 8; i++)
-	{
-		if (arr[i])
-		{
-			digitalWrite(_pinArray[i], HIGH);
-		}
-		else
-		{
-			digitalWrite(_pinArray[i], LOW);
-		}
 	}
 }
 
@@ -241,6 +240,52 @@ void sevenSegment::flashDigit(int digit, int flashes, int duration_ms)
 		// number stays off for duration_ms
 		delay(duration_ms);
 	}
+}
+
+void sevenSegment::showString(String s_numberToShow)
+{
+	int i_numberToShow;
+	
+	// Start by flashing the decimal point slowly 3 times
+	flashDigit(10, 3, 500);
+
+	// Show each char, flashing 5 times for 50ms each flash
+	for (int i = 0; i < (s_numberToShow.length()); i++)
+	{
+		if (s_numberToShow[i] == '.')
+		{
+			// DP is 10
+			i_numberToShow = 10;
+		}
+		else if (s_numberToShow[i] == '-')
+		{
+			// minus (hyphen) is 12
+			i_numberToShow = 12;
+		}
+		else if (s_numberToShow[i] == 'F')
+		{
+			i_numberToShow = 255;
+		}
+		else if (s_numberToShow[i] == 'C')
+		{
+			i_numberToShow = 254;
+		}
+		else
+		{
+			// just show digits as numbers (convert char to String to int)
+			i_numberToShow = String(s_numberToShow[i]).toInt();
+		}
+		flashDigit(i_numberToShow, 5, 50);
+		clearDisplay();
+		delay(200);
+	}
+}
+
+void sevenSegment::showFloat(float num)
+{
+	String s_numberToShow = String(num);
+	
+	showString(s_numberToShow);
 }
 
 int sevenSegment::readDigit()
@@ -323,81 +368,19 @@ int sevenSegment::readDigit()
 	return outputInt;
 }
 
-void sevenSegment::showFloat(float num)
+void sevenSegment::reinit()
 {
-	String s_numberToShow = String(num);
-	int i_numberToShow;
-	
-	// Start by flashing the decimal point slowly 3 times
-	flashDigit(10, 3, 500);
-
-	// Show each char, flashing 5 times for 50ms each flash
-	for (int i = 0; i < (s_numberToShow.length()); i++)
+	for (int i = 0; i < 8; i++)
 	{
-		if (s_numberToShow[i] == '.')
-		{
-			// DP is 10
-			i_numberToShow = 10;
-		}
-		else if (s_numberToShow[i] == '-')
-		{
-			// minus (hyphen) is 12
-			i_numberToShow = 12;
-		}
-		else if (s_numberToShow[i] == 'F')
-		{
-			i_numberToShow = 255;
-		}
-		else if (s_numberToShow[i] == 'C')
-		{
-			i_numberToShow = 254;
-		}
-		else
-		{
-			// just show digits as numbers (convert char to String to int)
-			i_numberToShow = String(s_numberToShow[i]).toInt();
-		}
-		flashDigit(i_numberToShow, 5, 50);
-		clearDisplay();
-		delay(200);
+		digitalWrite(_pinArray[i], HIGH);
 	}
+	
+	delay(50);
+	
+	for (int i = 0; i < 8; i++)
+	{
+		digitalWrite(_pinArray[i], LOW);
+	}
+	
 }
 
-void sevenSegment::showString(String s_numberToShow)
-{
-	int i_numberToShow;
-	
-	// Start by flashing the decimal point slowly 3 times
-	flashDigit(10, 3, 500);
-
-	// Show each char, flashing 5 times for 50ms each flash
-	for (int i = 0; i < (s_numberToShow.length()); i++)
-	{
-		if (s_numberToShow[i] == '.')
-		{
-			// DP is 10
-			i_numberToShow = 10;
-		}
-		else if (s_numberToShow[i] == '-')
-		{
-			// minus (hyphen) is 12
-			i_numberToShow = 12;
-		}
-		else if (s_numberToShow[i] == 'F')
-		{
-			i_numberToShow = 255;
-		}
-		else if (s_numberToShow[i] == 'C')
-		{
-			i_numberToShow = 254;
-		}
-		else
-		{
-			// just show digits as numbers (convert char to String to int)
-			i_numberToShow = String(s_numberToShow[i]).toInt();
-		}
-		flashDigit(i_numberToShow, 5, 50);
-		clearDisplay();
-		delay(200);
-	}
-}
