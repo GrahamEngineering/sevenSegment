@@ -13,8 +13,8 @@ class sevenSegment
 	sevenSegment(int pinArray[8]);
 	bool lightSegment(int seg);
 	bool clearSegment(int seg);
-	void showDigit(int digit);
 	void clearDisplay();
+	void showDigit(int digit);
 	void flashDigit(int digit, int flashes, int duration_ms);
 	void showString(String s_numberToShow);
 	void showFloat(float num);
