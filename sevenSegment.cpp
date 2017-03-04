@@ -20,7 +20,7 @@ sevenSegment::sevenSegment()
 {
 	int pinArray[8] = {4, 5, 6, 7, 8, 9, 10, 11};
 	
-	if (int i= 0; i < 8; i++)
+	for (int i= 0; i < 8; i++)
 	{
 		_pinArray[i] = pinArray[i];
 		pinMode(pinArray[i], OUTPUT);
