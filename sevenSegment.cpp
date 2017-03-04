@@ -3,11 +3,11 @@
     Allows user to configure and publish to a seven segment display
 	pin diagram to follow
 	
-	 _a_
-   f|   |b
-	|_g_|
-   e|   |c
-	|_d_|   . P
+	  _a_
+	f|   |b
+	 |_g_|
+	e|   |c
+	 |_d_|   . P
 	
 	array goes in order of {a,b,c,d,e,f,g,P} for a total of eight bits.
 
