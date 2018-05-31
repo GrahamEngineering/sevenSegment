@@ -3,11 +3,11 @@
     Allows user to configure and publish to a seven segment display
 	pin diagram to follow
 	
-	 _a_
-   f|   |b
-	|_g_|
-   e|   |c
-	|_d_|   . P
+          _a_
+        f|   |b
+         |_g_|
+        e|   |c
+         |_d_|   . P
 	
 	array goes in order of {a,b,c,d,e,f,g,P} for a total of eight bits.
 
@@ -400,4 +400,31 @@ void sevenSegment::showString(String s_numberToShow)
 		clearDisplay();
 		delay(200);
 	}
+}
+
+void sevenSegment::loadAnimation()
+{
+	int segmentDelay = 200; 		// X ms delay for each segment
+	
+	// Segments to show: a,b,c,d,e,f ==> 0,1,2,3,4,5
+	
+	for (int segment = 0; segment <= 5; segment++)
+	{
+		int previousSegment;
+		
+		if (segment == 0)
+		{
+			previousSegment = 5;
+		}
+		else
+		{
+			previousSegment = segment - 1;
+		}
+		
+		clearSegment(previousSegment);
+		lightSegment(segment);
+		delay(segmentDelay);
+	}
+
+	clearDisplay();
 }

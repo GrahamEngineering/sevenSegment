@@ -19,6 +19,8 @@ class sevenSegment
 	void showString(String s_numberToShow);
 	int readDigit();
 	void reinit();
+	void loadAnimation();
+	
   private:
 	void writeBitfield(int arr[8]);
 	bool compareArrays(int arr_a[8], int arr_b[8]);

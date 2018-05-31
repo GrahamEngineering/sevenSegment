@@ -31,6 +31,8 @@ Members of the sevenSegment class
 - void showString(String s_numberToShow);
 - int readDigit();
 - void reinit();
+- void loadAnimation();
+
 ### Private
 - void writeBitfield(int arr[8]);
 - bool compareArrays(int arr_a[8], int arr_b[8]);
