@@ -3,20 +3,11 @@
     Allows user to configure and publish to a seven segment display
 	pin diagram to follow
 	
-<<<<<<< HEAD
           _a_
         f|   |b
          |_g_|
         e|   |c
          |_d_|   . P
-=======
-	  _a_
-	f|   |b
-	 |_g_|
-	e|   |c
-	 |_d_|   . P
->>>>>>> f264a4335bd4f0904a0bb240588b3541c3fbadcd
-	
 	array goes in order of {a,b,c,d,e,f,g,P} for a total of eight bits.
 
 	
@@ -389,7 +380,6 @@ void sevenSegment::reinit()
 	{
 		digitalWrite(_pinArray[i], LOW);
 	}
-<<<<<<< HEAD
 }
 
 void sevenSegment::loadAnimation()
@@ -418,8 +408,3 @@ void sevenSegment::loadAnimation()
 
 	clearDisplay();
 }
-=======
-	
-}
-
->>>>>>> f264a4335bd4f0904a0bb240588b3541c3fbadcd
