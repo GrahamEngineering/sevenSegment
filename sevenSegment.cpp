@@ -3,11 +3,19 @@
     Allows user to configure and publish to a seven segment display
 	pin diagram to follow
 	
+<<<<<<< HEAD
           _a_
         f|   |b
          |_g_|
         e|   |c
          |_d_|   . P
+=======
+	  _a_
+	f|   |b
+	 |_g_|
+	e|   |c
+	 |_d_|   . P
+>>>>>>> f264a4335bd4f0904a0bb240588b3541c3fbadcd
 	
 	array goes in order of {a,b,c,d,e,f,g,P} for a total of eight bits.
 
@@ -15,6 +23,19 @@
  */
 #include "Arduino.h"
 #include "sevenSegment.h"
+
+sevenSegment::sevenSegment()
+{
+	int pinArray[8] = {4, 5, 6, 7, 8, 9, 10, 11};
+	
+	for (int i= 0; i < 8; i++)
+	{
+		_pinArray[i] = pinArray[i];
+		pinMode(pinArray[i], OUTPUT);
+	}
+	
+	_reinitCounter = 0;
+}
 
 sevenSegment::sevenSegment(int pinArray[8])
 {
@@ -30,7 +51,7 @@ sevenSegment::sevenSegment(int pinArray[8])
 	
 }
 
-bool sevenSegment::compareArrays(int arr_a[8], int arr_b[8])
+bool sevenSegment::_compareArrays(int arr_a[8], int arr_b[8])
 {
 	for (int i=0; i < 8; i++)
 	{
@@ -42,20 +63,19 @@ bool sevenSegment::compareArrays(int arr_a[8], int arr_b[8])
 	return true;
 }
 
-void sevenSegment::reinit()
+void sevenSegment::_writeBitfield(int arr[8])
 {
 	for (int i = 0; i < 8; i++)
 	{
-		digitalWrite(_pinArray[i], HIGH);
+		if (arr[i])
+		{
+			digitalWrite(_pinArray[i], HIGH);
+		}
+		else
+		{
+			digitalWrite(_pinArray[i], LOW);
+		}
 	}
-	
-	delay(50);
-	
-	for (int i = 0; i < 8; i++)
-	{
-		digitalWrite(_pinArray[i], LOW);
-	}
-	
 }
 
 bool sevenSegment::lightSegment(int seg)
@@ -90,7 +110,6 @@ bool sevenSegment::clearSegment(int seg)
 	}
 }
 
-
 void sevenSegment::clearDisplay()
 {
 	for (int i = 0; i < 8; i++)
@@ -102,7 +121,7 @@ void sevenSegment::clearDisplay()
 
 void sevenSegment::showDigit(int digit)
 {
-	if (digit >=0 && digit <= 12)
+	if ((digit >=0 && digit <= 12) || (digit >=254 && digit <= 255))
 	{
 		// digit is in range
 		/*
@@ -117,8 +136,10 @@ void sevenSegment::showDigit(int digit)
 			8 - {1,1,1,1,1,1,1,0}
 			9 - {1,1,1,1,0,0,1,0}
 			10 - (decmal point) {0,0,0,0,0,0,0,1}
-			11 = (all) {1,1,1,1,1,1,1,1}
-			12 = (hyphen) {0,0,0,0,0,0,1,0}
+			11 - (all) {1,1,1,1,1,1,1,1}
+			12 - (hyphen) {0,0,0,0,0,0,1,0}
+			254 - F
+			255 - C
 		
 		
 		*/
@@ -126,104 +147,90 @@ void sevenSegment::showDigit(int digit)
 		{
 			case 0:
 			{
-				writeBitfield(c0);
+				_writeBitfield(c0);
 				break;
 			}
 			case 1:
 			{
-				writeBitfield(c1);
+				_writeBitfield(c1);
 				break;
 			}
 			case 2:
 			{
-				writeBitfield(c2);
+				_writeBitfield(c2);
 				break;
 			}
 			case 3:
 			{
-				writeBitfield(c3);
+				_writeBitfield(c3);
 				break;
 			}
 			case 4:
 			{
-				writeBitfield(c4);
+				_writeBitfield(c4);
 				break;
 			}
 			case 5:
 			{
-				writeBitfield(c5);
+				_writeBitfield(c5);
 				break;
 			}
 			case 6:
 			{
-				writeBitfield(c6);
+				_writeBitfield(c6);
 				break;
 			}
 			case 7:
 			{
-				writeBitfield(c7);
+				_writeBitfield(c7);
 				break;
 			}
 			case 8:
 			{
-				writeBitfield(c8);
+				_writeBitfield(c8);
 				break;
 			}
 			case 9:
 			{
-				writeBitfield(c9);
+				_writeBitfield(c9);
 				break;
 			}
 			case 10:
 			{
-				writeBitfield(c10);
+				_writeBitfield(c10);
 				break;
 			}
 			case 11:
 			{
-				writeBitfield(c11);
+				_writeBitfield(c11);
 				break;
 			}
 			case 12:
 			{
-				writeBitfield(c12);
+				_writeBitfield(c12);
 				break;
 			}
 			case 255:
 			{
-				writeBitfield(c255);
+				_writeBitfield(c255);
 				break;
 			}
 			case 254:
 			{
-				writeBitfield(c254);
+				_writeBitfield(c254);
 				break;
 			}
 			default:
 			{
-				writeBitfield(c255);
+				//Serial.println("Invalid value passed in to showDigit()");
+				clearDisplay();
 				break;
 			}
 		}
 	}
 	else
 	{
-		writeBitfield(c255);
-	}
-}
-
-void sevenSegment::writeBitfield(int arr[8])
-{
-	for (int i = 0; i < 8; i++)
-	{
-		if (arr[i])
-		{
-			digitalWrite(_pinArray[i], HIGH);
-		}
-		else
-		{
-			digitalWrite(_pinArray[i], LOW);
-		}
+		_writeBitfield(c255);
 	}
 }
 
@@ -240,126 +247,6 @@ void sevenSegment::flashDigit(int digit, int flashes, int duration_ms)
 		clearDisplay();
 		// number stays off for duration_ms
 		delay(duration_ms);
-	}
-}
-
-int sevenSegment::readDigit()
-{
-	int currentPins[8];
-	int outputInt;
-	
-	// Read the current pins
-	for (int i = 0; i < 8; i++)
-	{
-		currentPins[i] = digitalRead(_pinArray[i]);
-	}
-	
-	// Compare to known values	
-	if (compareArrays(currentPins, c0))
-	{
-		outputInt = 0;	
-	}
-	else if (compareArrays(currentPins, c1))
-	{
-		outputInt = 1;
-	}
-	else if (compareArrays(currentPins, c2))
-	{
-		outputInt = 2;
-	}
-	else if (compareArrays(currentPins, c3))
-	{
-		outputInt = 3;
-	}
-	else if (compareArrays(currentPins, c4))
-	{
-		outputInt = 4;
-	}
-	else if (compareArrays(currentPins, c5))
-	{
-		outputInt = 5;
-	}
-	else if (compareArrays(currentPins, c6))
-	{
-		outputInt = 6;
-	}
-	else if (compareArrays(currentPins, c7))
-	{
-		outputInt = 7;
-	}
-	else if (compareArrays(currentPins, c8))
-	{
-		outputInt = 8;
-	}
-	else if (compareArrays(currentPins, c9))
-	{
-		outputInt = 9;
-	}
-	else if (compareArrays(currentPins, c10))
-	{
-		outputInt = 10;
-	}
-	else if (compareArrays(currentPins, c11))
-	{
-		outputInt = 11;
-	}
-	else if (compareArrays(currentPins, c12))
-	{
-		outputInt = 12;
-	}
-	else if (compareArrays(currentPins, c255))
-	{
-		outputInt = 255;
-	}
-	else if (compareArrays(currentPins, c254))
-	{
-		outputInt = 254;
-	}
-	else
-	{
-		// something has gone horribly wrong.
-		outputInt = 255;
-	}
-	return outputInt;
-}
-
-void sevenSegment::showFloat(float num)
-{
-	String s_numberToShow = String(num);
-	int i_numberToShow;
-	
-	// Start by flashing the decimal point slowly 3 times
-	flashDigit(10, 3, 500);
-
-	// Show each char, flashing 5 times for 50ms each flash
-	for (int i = 0; i < (s_numberToShow.length()); i++)
-	{
-		if (s_numberToShow[i] == '.')
-		{
-			// DP is 10
-			i_numberToShow = 10;
-		}
-		else if (s_numberToShow[i] == '-')
-		{
-			// minus (hyphen) is 12
-			i_numberToShow = 12;
-		}
-		else if (s_numberToShow[i] == 'F')
-		{
-			i_numberToShow = 255;
-		}
-		else if (s_numberToShow[i] == 'C')
-		{
-			i_numberToShow = 254;
-		}
-		else
-		{
-			// just show digits as numbers (convert char to String to int)
-			i_numberToShow = String(s_numberToShow[i]).toInt();
-		}
-		flashDigit(i_numberToShow, 5, 50);
-		clearDisplay();
-		delay(200);
 	}
 }
 
@@ -402,6 +289,109 @@ void sevenSegment::showString(String s_numberToShow)
 	}
 }
 
+void sevenSegment::showFloat(float num)
+{
+	String s_numberToShow = String(num);
+	
+	showString(s_numberToShow);
+}
+
+int sevenSegment::readDigit()
+{
+	int currentPins[8];
+	int outputInt;
+	
+	// Read the current pins
+	for (int i = 0; i < 8; i++)
+	{
+		currentPins[i] = digitalRead(_pinArray[i]);
+	}
+	
+	// Compare to known values	
+	if (_compareArrays(currentPins, c0))
+	{
+		outputInt = 0;	
+	}
+	else if (_compareArrays(currentPins, c1))
+	{
+		outputInt = 1;
+	}
+	else if (_compareArrays(currentPins, c2))
+	{
+		outputInt = 2;
+	}
+	else if (_compareArrays(currentPins, c3))
+	{
+		outputInt = 3;
+	}
+	else if (_compareArrays(currentPins, c4))
+	{
+		outputInt = 4;
+	}
+	else if (_compareArrays(currentPins, c5))
+	{
+		outputInt = 5;
+	}
+	else if (_compareArrays(currentPins, c6))
+	{
+		outputInt = 6;
+	}
+	else if (_compareArrays(currentPins, c7))
+	{
+		outputInt = 7;
+	}
+	else if (_compareArrays(currentPins, c8))
+	{
+		outputInt = 8;
+	}
+	else if (_compareArrays(currentPins, c9))
+	{
+		outputInt = 9;
+	}
+	else if (_compareArrays(currentPins, c10))
+	{
+		outputInt = 10;
+	}
+	else if (_compareArrays(currentPins, c11))
+	{
+		outputInt = 11;
+	}
+	else if (_compareArrays(currentPins, c12))
+	{
+		outputInt = 12;
+	}
+	else if (_compareArrays(currentPins, c255))
+	{
+		outputInt = 255;
+	}
+	else if (_compareArrays(currentPins, c254))
+	{
+		outputInt = 254;
+	}
+	else
+	{
+		// something has gone horribly wrong.
+		outputInt = 255;
+	}
+	return outputInt;
+}
+
+void sevenSegment::reinit()
+{
+	for (int i = 0; i < 8; i++)
+	{
+		digitalWrite(_pinArray[i], HIGH);
+	}
+	
+	delay(50);
+	
+	for (int i = 0; i < 8; i++)
+	{
+		digitalWrite(_pinArray[i], LOW);
+	}
+<<<<<<< HEAD
+}
+
 void sevenSegment::loadAnimation()
 {
 	int segmentDelay = 200; 		// X ms delay for each segment
@@ -428,3 +418,8 @@ void sevenSegment::loadAnimation()
 
 	clearDisplay();
 }
+=======
+	
+}
+
+>>>>>>> f264a4335bd4f0904a0bb240588b3541c3fbadcd

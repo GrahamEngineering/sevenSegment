@@ -1,4 +1,4 @@
-# sevenSegment.h
+# Graham Engineering - sevenSegment.h
 A quick toolset to enable the simple manipulation of a 7-segment display.
 ### Current Version: 0.9
 ## Overview
@@ -9,6 +9,7 @@ Useful for the following:
 - Setting/clearing temperature-related characters _C_ elsius or _F_ ahrenheit
 - Flashing a sequence _(with configurable timing)_ of any of the above
 - Flashing an entire _string_ in a specific sequence
+
 ## Author
 The author is Matthew Graham ([matthew.j.graham@gmail.com](mailto:matthew.j.graham@gmail.com])).  He don't know shit about programming.
 
@@ -34,8 +35,8 @@ Members of the sevenSegment class
 - void loadAnimation();
 
 ### Private
-- void writeBitfield(int arr[8]);
-- bool compareArrays(int arr_a[8], int arr_b[8]);
+- void _writeBitfield(int arr[8]);
+- bool _compareArrays(int arr_a[8], int arr_b[8]);
 - int _pinArray[8];
 - uint8_t _reinitCounter;
 - int c0[8] = {1,1,1,1,1,1,0,0};
