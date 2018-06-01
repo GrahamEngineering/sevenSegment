@@ -408,3 +408,11 @@ void sevenSegment::loadAnimation()
 
 	clearDisplay();
 }
+
+void sevenSegment::loadAnimation(int repeatCount)
+{
+	for (int i=0; i < repeatCount; i++)
+	{
+		loadAnimation();
+	}
+}

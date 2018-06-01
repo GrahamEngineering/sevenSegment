@@ -14,7 +14,7 @@ int delayTimer = 500;
 void setup()
 {
 	Serial.begin(9600);
-	While (!Serial){}
+	while (!Serial){}
 	Serial.println("---------------------------------");
 	Serial.println("  Seven Segment Display Example  ");
 	Serial.println("---------------------------------");
@@ -22,8 +22,11 @@ void setup()
 
 void loop()
 {
+	// Show 5 iterations of the loading animation
+	display_1.loadAnimation(5);
+	
 	// Light each segment individually
-	for (int i = 0; i < (sizeof)pinArray; i++)
+	for (int i = 0; i < sizeof(pinArray); i++)
 	{
 		display_1.lightSegment(i);
 		delay(delayTimer);
@@ -71,7 +74,7 @@ void loop()
 		call "flashDigit()" with the digit you want to show, the number of flashes, and the ms for each flash.
 		This is a blocking function - nothing else will run while flashing is happening for the delays
 	*/
-	for (int k = 0; k < (sizeof)pinArray; k++)
+	for (int k = 0; k < sizeof(pinArray); k++)
 	{
 		display_1.flashDigit(k, 3, 50);
 	}

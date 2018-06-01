@@ -21,6 +21,7 @@ class sevenSegment
 	int readDigit();
 	void reinit();
 	void loadAnimation();
+	void loadAnimation(int repeatCount);
 	
   private:
 	void _writeBitfield(int arr[8]);
