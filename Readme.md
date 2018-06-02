@@ -1,6 +1,6 @@
 # Graham Engineering - sevenSegment.h
 A quick toolset to enable the simple manipulation of a 7-segment display.
-### Current Version: 0.9
+### Current Version: 0.9.a
 ## Overview
 A quickly-designed class for the use of setting a seven segment display
 Useful for the following:

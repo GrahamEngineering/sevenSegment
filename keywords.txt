@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 sevenSegment	KEYWORD1
 
 lightSegment	KEYWORD2
@@ -24,4 +23,3 @@ showFloat	KEYWORD2
 showString	KEYWORD2
 readDigit	KEYWORD2
 reinit	KEYWORD2
->>>>>>> f264a4335bd4f0904a0bb240588b3541c3fbadcd

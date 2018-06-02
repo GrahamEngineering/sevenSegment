@@ -3,6 +3,7 @@
 	
 	Author: matthew.j.graham@gmail.com
 	Date: 1 March 2017
+	Updated: 2 June 2018
 
 */
 #include <sevenSegment.h>
